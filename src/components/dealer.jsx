@@ -2,7 +2,7 @@ import React from 'react';
 import Card from './card.jsx';
 
 const Dealer = ({
-  info, start, trackTotals, hitDeck, turn,
+  info, start, trackTotals, hitDeck, turn, changeTurn,
 }) => {
   let blackjack = false;
   if (info.total === 21) {
@@ -10,14 +10,13 @@ const Dealer = ({
       blackjack = true;
     }
   }
-  console.log(turn);
-  if (turn === 'dealer') {
-    console.log(info.total);
-    if (info.total < 21) {
+  if (turn === info.title) {
+    if (info.total < 17 && info.total < 21) {
       hitDeck(null, info.title);
+    } else {
+      changeTurn();
     }
   }
-
   return (
     <div style={{ border: '1px solid black' }}>
       <div>

@@ -49,7 +49,19 @@ class App extends React.Component {
 
   changeTurn() {
     if (this.state.turn === 'human') {
-      this.setState({ turn: 'dealer' });
+      this.setState({ turn: 'Robot1' });
+    } else if (this.state.turn === 'Robot1') {
+      this.setState({ turn: 'Robot2' });
+    } else if (this.state.turn === 'Robot2') {
+      this.setState({ turn: 'Robot3' });
+    } else if (this.state.turn === 'Robot3') {
+      this.setState({ turn: 'Robot4' });
+    } else if (this.state.turn === 'Robot4') {
+      this.setState({ turn: 'Robot5' });
+    } else if (this.state.turn === 'Robot5') {
+      this.setState({ turn: 'Dealer' });
+    } else {
+      this.setState({ turn: 'End' });
     }
   }
 
