@@ -3,7 +3,11 @@ import Card from './card.jsx';
 import CardTotal from './cardTotal.jsx';
 
 const Robot = ({
-  info, trackTotals, turn, changeTurn, hitDeck, start,
+  info,
+  turn,
+  changeTurn,
+  hitDeck,
+  start,
 }) => {
   let blackjack = false;
   if (info.total === 21) {
