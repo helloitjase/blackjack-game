@@ -6,6 +6,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       players: [{ title: 'Dealer', cards: [], total: 0 }, { title: 'Human', cards: [], total: 0 }],
+      turn: 'human',
     };
     this.deck = [];
     this.shuffleDeck = this.shuffleDeck.bind(this);
@@ -17,6 +18,7 @@ class App extends React.Component {
     this.trackTotals = this.trackTotals.bind(this);
     this.computeTotals = this.computeTotals.bind(this);
     this.trackTotals = this.trackTotals.bind(this);
+    this.changeTurn = this.changeTurn.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,11 @@ class App extends React.Component {
     });
   }
 
+  changeTurn() {
+    if (this.state.turn === 'human') {
+      this.setState({ turn: 'dealer' });
+    }
+  }
 
   computeTotals(cards) {
     const totals = [];
@@ -80,7 +87,6 @@ class App extends React.Component {
     players.forEach((player, id) => {
       player.total = this.computeTotals(player.cards);
     });
-    console.log(players);
     this.setState({ players });
   }
 
@@ -148,11 +154,11 @@ class App extends React.Component {
 
 
   render() {
-    const { players, dealer } = this.state;
+    const { players, turn } = this.state;
     return (
       <div>
         BlackJack Game!
-        <Players trackTotals={this.trackTotals} start={this.startGame} hitDeck={this.hitDeck} players={players} />
+        <Players turn={turn} changeTurn={this.changeTurn} trackTotals={this.trackTotals} start={this.startGame} hitDeck={this.hitDeck} players={players} />
       </div>
     );
   }
