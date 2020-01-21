@@ -33,10 +33,11 @@ class App extends React.Component {
 
   dealCards() {
     const players = this.state.players.slice();
+    players.forEach((player) => {
+      player.cards = [];
+      player.total = 0;
+    });
     for (let j = 0; j < players.length; j++) {
-      if (players[j].cards.length !== 0) {
-        players[j].cards = [];
-      }
       for (let i = 0; i < 2; i++) {
         const card = this.deck.pop();
         players[j].cards.push(card);
