@@ -6,7 +6,7 @@ const Robot = ({
   info,
   turn,
   changeTurn,
-  hitDeck,
+  hitRobotDeck,
   start,
 }) => {
   let blackjack = false;
@@ -15,12 +15,12 @@ const Robot = ({
       blackjack = true;
     }
   }
+  console.log(info.title, info.total);
   if (turn === info.title) {
     if (info.total >= 17) {
-      console.log(info.title, info.total);
       changeTurn();
     } else if (info.total < 17) {
-      hitDeck(null, info.title);
+      hitRobotDeck(info.title);
     }
   }
   return (

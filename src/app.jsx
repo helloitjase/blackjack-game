@@ -16,10 +16,10 @@ class App extends React.Component {
     this.dealCards = this.dealCards.bind(this);
     this.startGame = this.startGame.bind(this);
     this.hitDeck = _.throttle(this.hitDeck.bind(this), 2000);
-    this.trackTotals = this.trackTotals.bind(this);
     this.computeTotals = this.computeTotals.bind(this);
     this.trackTotals = this.trackTotals.bind(this);
     this.changeTurn = this.changeTurn.bind(this);
+    this.hitRobotDeck = this.hitRobotDeck.bind(this);
   }
 
   componentDidMount() {
@@ -104,6 +104,30 @@ class App extends React.Component {
     this.setState({ players });
   }
 
+  hitRobotDeck(currPlayer) {
+    const players = [...this.state.players];
+    let id;
+    const player = players.filter((play, idx) => {
+      if (play.title === currPlayer) {
+        id = idx;
+        return true;
+      }
+    });
+    const curr = player[0];
+    const card = this.deck.pop();
+    if (card === undefined) {
+      window.alert('No cards in Deck, restart game');
+    }
+    curr.cards.push(card);
+    curr.total = this.computeTotals(curr.cards);
+    while (curr.total <= 21) {
+      const newCard = this.deck.pop();
+      curr.cards.push(newCard);
+      curr.total = this.computeTotals(curr.cards);
+    }
+    players[id] = curr;
+    this.setState({ players });
+  }
 
   hitDeck(e, currPlayer) {
     const players = [...this.state.players];
@@ -120,9 +144,9 @@ class App extends React.Component {
       window.alert('No cards in Deck, restart game');
     }
     curr.cards.push(card);
+    curr.total = this.computeTotals(curr.cards);
     players[id] = curr;
     this.setState({ players });
-    this.trackTotals();
   }
 
   createRobots(n) {
@@ -169,14 +193,20 @@ class App extends React.Component {
 
   render() {
     const { players, turn } = this.state;
-    console.log(turn);
-    if (turn === 'End') {
-      const dealer = players.filter((player) => player.title === 'Dealer');
-    }
+    // console.log(turn);
+    // if (turn === 'End') {
+    //   const dealer = players.filter((player) => player.title === 'Dealer');
+    //   const wons = players.filter((player) => {
+    //     if (player.title !== 'Dealer') {
+    //       return player.total <= dealer.total;
+    //     }
+    //   });
+    //   console.log(wons);
+    // }
     return (
       <div>
         BlackJack Game!
-        <Players turn={turn} changeTurn={this.changeTurn} trackTotals={this.trackTotals} start={this.startGame} hitDeck={this.hitDeck} players={players} />
+        <Players turn={turn} changeTurn={this.changeTurn} trackTotals={this.trackTotals} start={this.startGame} hitRobotDeck={this.hitRobotDeck} hitDeck={this.hitDeck} players={players} />
       </div>
     );
   }

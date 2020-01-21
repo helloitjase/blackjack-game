@@ -5,7 +5,7 @@ import Robot from './robots.jsx';
 import Dealer from './dealer.jsx';
 
 const Players = ({
-  players, hitDeck, start, trackTotals, changeTurn, turn,
+  players, hitDeck, start, trackTotals, changeTurn, turn, hitRobotDeck,
 }) => {
   const hi = 'hi';
   return (
@@ -14,7 +14,7 @@ const Players = ({
         if (player.title === 'Human') {
           return <Human turn={turn} changeTurn={changeTurn} trackTotals={trackTotals} key={player.title} hitDeck={hitDeck} key={player.title} info={player} />;
         } else {
-          return <Robot start={start} hitDeck={hitDeck} changeTurn={changeTurn} turn={turn} trackTotals={trackTotals} key={player.title} info={player} />;
+          return <Robot start={start} hitRobotDeck={hitRobotDeck} changeTurn={changeTurn} turn={turn} trackTotals={trackTotals} key={player.title} info={player} />;
         }
       })}
     </div>
