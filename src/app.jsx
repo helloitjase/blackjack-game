@@ -218,7 +218,7 @@ class App extends React.Component {
       wons.forEach((winner) => {
         congrats += `${winner.title}, `;
       });
-      congrats += 'have won! Click Start Game to play again!';
+      congrats += 'have won! Click "Start Game" to play again!';
       let message = '';
       if (dealer.count > 21 && wons.length === 0) {
         message = 'Nobody won, try again by clicking "Start Game"';

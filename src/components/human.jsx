@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from './card.jsx';
-import CardTotal from './cardTotal.jsx';
 
 const Human = ({
   info, hitDeck, trackTotals, changeTurn,

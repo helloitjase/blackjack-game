@@ -2,7 +2,6 @@
 import React from 'react';
 import Human from './human.jsx';
 import Robot from './robots.jsx';
-import Dealer from './dealer.jsx';
 
 const Players = ({
   players, hitDeck, start, trackTotals, changeTurn, turn, hitRobotDeck,
