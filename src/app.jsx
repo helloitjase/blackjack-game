@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import Players from './components/players.jsx';
 
@@ -19,6 +20,7 @@ class App extends React.Component {
     this.trackTotals = this.trackTotals.bind(this);
     this.changeTurn = this.changeTurn.bind(this);
     this.hitRobotDeck = this.hitRobotDeck.bind(this);
+    this.gameEnding = this.gameEnding.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +31,47 @@ class App extends React.Component {
     this.shuffleDeck();
     this.dealCards();
     this.trackTotals();
+  }
+
+  createRobots(n) {
+    const robots = [];
+    for (let i = 1; i <= n; i++) {
+      const robot = {
+        title: `Robot${i}`,
+        cards: [],
+        total: 0,
+      };
+      robots.push(robot);
+    }
+    this.setState((state) => ({ players: state.players.concat(robots) }));
+  }
+
+  createDeck() {
+    const suites = ['♠', '♥', '♦', '♣'];
+    const nonNumbs = ['A', 'K', 'Q', 'J'];
+    const deck = [];
+    for (let i = 0; i < nonNumbs.length; i++) {
+      for (let j = 0; j < suites.length; j++) {
+        deck.push(nonNumbs[i] + suites[j]);
+      }
+    }
+    for (let i = 2; i <= 10; i++) {
+      for (let j = 0; j < suites.length; j++) {
+        deck.push(i + suites[j]);
+      }
+    }
+    return deck;
+  }
+
+  shuffleDeck() {
+    const deck = this.createDeck();
+    for (let i = deck.length - 1; i >= 0; i--) {
+      const choose = Math.floor(Math.random() * (i + 1));
+      const temp = deck[i];
+      deck[i] = deck[choose];
+      deck[choose] = temp;
+    }
+    this.deck = deck;
   }
 
   dealCards() {
@@ -99,7 +142,7 @@ class App extends React.Component {
 
   trackTotals() {
     const players = [...this.state.players];
-    players.forEach((player, id) => {
+    players.forEach((player) => {
       player.total = this.computeTotals(player.cards);
     });
     this.setState({ players });
@@ -130,11 +173,11 @@ class App extends React.Component {
     this.setState({ players });
   }
 
-  hitDeck(e, currPlayer) {
+  hitDeck() {
     const players = [...this.state.players];
     let id;
     const player = players.filter((play, idx) => {
-      if (play.title === currPlayer) {
+      if (play.title === 'Human') {
         id = idx;
         return true;
       }
@@ -150,88 +193,46 @@ class App extends React.Component {
     this.setState({ players });
   }
 
-  createRobots(n) {
-    const robots = [];
-    for (let i = 1; i <= n; i++) {
-      const robot = {
-        title: `Robot${i}`,
-        cards: [],
-        total: 0,
-      };
-      robots.push(robot);
-    }
-    this.setState((state) => ({ players: state.players.concat(robots) }));
-  }
 
-  createDeck() {
-    const suites = ['♠', '♥', '♦', '♣'];
-    const nonNumbs = ['A', 'K', 'Q', 'J'];
-    const deck = [];
-    for (let i = 0; i < nonNumbs.length; i++) {
-      for (let j = 0; j < suites.length; j++) {
-        deck.push(nonNumbs[i] + suites[j]);
+  gameEnding() {
+    const { players } = this.state;
+    const dealer = players.filter((player) => player.title === 'Dealer')[0];
+    const wons = players.filter((player) => {
+      if (player.title !== 'Dealer') {
+        if (dealer.total > 21) {
+          if (player.total < 22) {
+            return true;
+          }
+        } else if (player.total === 21) {
+          return true;
+        } else if (player.total >= dealer.total && player.total < 22) {
+          return true;
+        } else {
+          return false;
+        }
       }
+    });
+    let congrats = 'Congrats, players ';
+    wons.forEach((winner) => {
+      congrats += `${winner.title}, `;
+    });
+    congrats += 'have won! Click "Start Game" to play again!';
+    let message = '';
+    if (dealer.count > 21 && wons.length === 0) {
+      message = 'Nobody won, try again by clicking "Start Game"';
+    } else {
+      message = 'The dealer won, try again by clicking "Start Game"';
     }
-    for (let i = 2; i <= 10; i++) {
-      for (let j = 0; j < suites.length; j++) {
-        deck.push(i + suites[j]);
-      }
-    }
-    return deck;
+    return wons.length > 0 ? <div>{congrats}</div> : <div>{message}</div>;
   }
-
-  shuffleDeck() {
-    const deck = this.createDeck();
-    for (let i = deck.length - 1; i >= 0; i--) {
-      const choose = Math.floor(Math.random() * (i + 1));
-      const temp = deck[i];
-      deck[i] = deck[choose];
-      deck[choose] = temp;
-    }
-    this.deck = deck;
-  }
-
 
   render() {
     const { players, turn } = this.state;
-    console.log(turn);
-    let display;
-    if (turn === 'End') {
-      const dealer = players.filter((player) => player.title === 'Dealer')[0];
-
-      const wons = players.filter((player) => {
-        if (player.title !== 'Dealer') {
-          if (dealer.total > 21) {
-            if (player.total < 22) {
-              return true;
-            }
-          } else if (player.total === 21) {
-            return true;
-          } else if (player.total >= dealer.total && player.total < 22) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-      let congrats = 'Congrats, players ';
-      wons.forEach((winner) => {
-        congrats += `${winner.title}, `;
-      });
-      congrats += 'have won! Click "Start Game" to play again!';
-      let message = '';
-      if (dealer.count > 21 && wons.length === 0) {
-        message = 'Nobody won, try again by clicking "Start Game"';
-      } else {
-        message = 'The dealer won, try again by clicking "Start Game"';
-      }
-      display = wons.length > 0 ? <div>{congrats}</div> : <div>{message}</div>;
-    }
     return (
       <div>
         BlackJack Game!
         <Players turn={turn} changeTurn={this.changeTurn} trackTotals={this.trackTotals} start={this.startGame} hitRobotDeck={this.hitRobotDeck} hitDeck={this.hitDeck} players={players} />
-        {turn === 'End' ? display : ''}
+        {turn === 'End' ? this.gameEnding() : ''}
       </div>
     );
   }

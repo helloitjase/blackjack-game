@@ -1,32 +1,44 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Card from './card.jsx';
 
 const Human = ({
-  info, hitDeck, trackTotals, changeTurn,
+  info: {
+    title,
+    cards,
+    total,
+  },
+  hitDeck,
+  changeTurn,
 }) => {
   let blackjack = false;
-  if (info.total === 21) {
-    if (info.cards.length === 2) {
+  if (total === 21) {
+    if (cards.length === 2) {
       blackjack = true;
     }
   }
+  const display = total < 22 ? total : `Busted at ${total}`;
   return (
     <div style={{ border: '1px solid black' }}>
       <div>
-        {info.title}
+        {title}
       </div>
       <div>
-        {info.cards.length === 0 ? 'No cards in Hand' : info.cards.map((card, id) => <Card key={id + 1} card={card} />)}
+        {cards.length === 0 ? 'No cards in Hand' : cards.map((card, id) => <Card key={id + 1} card={card} />)}
       </div>
       <div>
-        {blackjack ? 'Blackjack' : info.total < 22 ? info.total : `Busted at ${info.total}`}
+        {blackjack ? 'Blackjack' : display}
       </div>
       <div>
-        <button onClick={(e) => hitDeck(e, info.title)} type="button">Hit</button>
+        <button onClick={hitDeck} type="button">Hit</button>
         <button onClick={changeTurn} type="button">Stay</button>
       </div>
     </div>
   );
 };
 
+Human.propTypes = {
+  changeTurn: PropTypes.func.isRequired,
+  hitDeck: PropTypes.func.isRequired,
+};
 export default Human;
