@@ -45,6 +45,7 @@ class App extends React.Component {
     }
     this.setState({
       players,
+      turn: 'human',
     });
   }
 
@@ -193,20 +194,44 @@ class App extends React.Component {
 
   render() {
     const { players, turn } = this.state;
-    // console.log(turn);
-    // if (turn === 'End') {
-    //   const dealer = players.filter((player) => player.title === 'Dealer');
-    //   const wons = players.filter((player) => {
-    //     if (player.title !== 'Dealer') {
-    //       return player.total <= dealer.total;
-    //     }
-    //   });
-    //   console.log(wons);
-    // }
+    console.log(turn);
+    let display;
+    if (turn === 'End') {
+      const dealer = players.filter((player) => player.title === 'Dealer')[0];
+
+      const wons = players.filter((player) => {
+        if (player.title !== 'Dealer') {
+          if (dealer.total > 21) {
+            if (player.total < 22) {
+              return true;
+            }
+          } else if (player.total === 21) {
+            return true;
+          } else if (player.total >= dealer.total && player.total < 22) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      });
+      let congrats = 'Congrats, players ';
+      wons.forEach((winner) => {
+        congrats += `${winner.title}, `;
+      });
+      congrats += 'have won! Click Start Game to play again!';
+      let message = '';
+      if (dealer.count > 21 && wons.length === 0) {
+        message = 'Nobody won, try again by clicking "Start Game"';
+      } else {
+        message = 'The dealer won, try again by clicking "Start Game"';
+      }
+      display = wons.length > 0 ? <div>{congrats}</div> : <div>{message}</div>;
+    }
     return (
       <div>
         BlackJack Game!
         <Players turn={turn} changeTurn={this.changeTurn} trackTotals={this.trackTotals} start={this.startGame} hitRobotDeck={this.hitRobotDeck} hitDeck={this.hitDeck} players={players} />
+        {turn === 'End' ? display : ''}
       </div>
     );
   }
