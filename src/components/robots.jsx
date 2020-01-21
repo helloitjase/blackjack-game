@@ -26,7 +26,7 @@ const Robot = ({
       hitRobotDeck(title);
     }
   }
-  const display = total < 22 ? total : `Busted at ${total}`;
+  const display = total < 22 ? total : `${total}, Busted`;
   return (
     <div style={{ border: '1px solid black' }}>
       <div>
@@ -36,7 +36,7 @@ const Robot = ({
         {cards.length === 0 ? 'No cards in Hand' : cards.map((card, id) => <Card key={id + 1} card={card} />)}
       </div>
       <div>
-        {blackjack ? 'Blackjack' : display}
+        {blackjack ? 'Blackjack' : `Total count ${display}`}
       </div>
       <div>{ title === 'Dealer' ? <button onClick={start} type="button">Start Game</button> : ''}</div>
     </div>

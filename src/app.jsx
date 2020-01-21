@@ -75,7 +75,7 @@ class App extends React.Component {
   }
 
   dealCards() {
-    const players = this.state.players.slice();
+    const players = [...this.state.players];
     players.forEach((player) => {
       player.cards = [];
       player.total = 0;
@@ -231,7 +231,15 @@ class App extends React.Component {
     return (
       <div>
         BlackJack Game!
-        <Players turn={turn} changeTurn={this.changeTurn} trackTotals={this.trackTotals} start={this.startGame} hitRobotDeck={this.hitRobotDeck} hitDeck={this.hitDeck} players={players} />
+        <Players
+          turn={turn}
+          changeTurn={this.changeTurn}
+          trackTotals={this.trackTotals}
+          start={this.startGame}
+          hitRobotDeck={this.hitRobotDeck}
+          hitDeck={this.hitDeck}
+          players={players}
+        />
         {turn === 'End' ? this.gameEnding() : ''}
       </div>
     );
