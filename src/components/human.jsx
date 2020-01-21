@@ -8,6 +8,7 @@ const Human = ({
     cards,
     total,
   },
+  turn,
   hitDeck,
   changeTurn,
 }) => {
@@ -16,6 +17,8 @@ const Human = ({
     if (cards.length === 2) {
       blackjack = true;
     }
+  } else if (turn === 'human' && total > 21) {
+    changeTurn();
   }
   const display = total < 22 ? total : `${total}, Busted`;
   return (
@@ -40,5 +43,6 @@ const Human = ({
 Human.propTypes = {
   changeTurn: PropTypes.func.isRequired,
   hitDeck: PropTypes.func.isRequired,
+  turn: PropTypes.string.isRequired,
 };
 export default Human;
