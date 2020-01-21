@@ -18,12 +18,12 @@ Go to `localhost:3000`.
 Have fun!
 
 ## Play Instructions:
-#### 1 
-Click "Start Game" button.
-#### 2
-Click "Hit" button until you have reached desired value or bust.
-#### 3
-If value is under or equal to 21 click "Stay" button to have robots play.
+#### 1.
+Click `Start Game` button.
+#### 2.
+Click `Hit` button until you have reached desired value or bust.
+#### 3.
+If value is under or equal to 21 click `Stay` button to have robots play.
 If value has Busted Robots will automatically play and end game display will be shown on the bottom.
-#### 4
-Click "Start Game" button to play again.
+#### 4.
+Click `Start Game` button to play again.
