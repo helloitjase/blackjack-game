@@ -1,5 +1,4 @@
 import React from 'react';
-import * as _ from 'underscore';
 import Players from './components/players.jsx';
 
 class App extends React.Component {
@@ -15,7 +14,7 @@ class App extends React.Component {
     this.createRobots = this.createRobots.bind(this);
     this.dealCards = this.dealCards.bind(this);
     this.startGame = this.startGame.bind(this);
-    this.hitDeck = _.throttle(this.hitDeck.bind(this), 2000);
+    this.hitDeck = this.hitDeck.bind(this);
     this.computeTotals = this.computeTotals.bind(this);
     this.trackTotals = this.trackTotals.bind(this);
     this.changeTurn = this.changeTurn.bind(this);
@@ -120,7 +119,7 @@ class App extends React.Component {
     }
     curr.cards.push(card);
     curr.total = this.computeTotals(curr.cards);
-    while (curr.total <= 21) {
+    while (curr.total < 17) {
       const newCard = this.deck.pop();
       curr.cards.push(newCard);
       curr.total = this.computeTotals(curr.cards);

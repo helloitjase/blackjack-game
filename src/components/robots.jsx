@@ -15,7 +15,6 @@ const Robot = ({
       blackjack = true;
     }
   }
-  console.log(info.title, info.total);
   if (turn === info.title) {
     if (info.total >= 17) {
       changeTurn();
