@@ -1,4 +1,5 @@
 import React from 'react';
+import * as _ from 'underscore';
 import Players from './components/players.jsx';
 
 class App extends React.Component {
@@ -14,7 +15,7 @@ class App extends React.Component {
     this.createRobots = this.createRobots.bind(this);
     this.dealCards = this.dealCards.bind(this);
     this.startGame = this.startGame.bind(this);
-    this.hitDeck = this.hitDeck.bind(this);
+    this.hitDeck = _.throttle(this.hitDeck.bind(this), 2000);
     this.trackTotals = this.trackTotals.bind(this);
     this.computeTotals = this.computeTotals.bind(this);
     this.trackTotals = this.trackTotals.bind(this);
@@ -48,17 +49,18 @@ class App extends React.Component {
   }
 
   changeTurn() {
-    if (this.state.turn === 'human') {
+    const { turn } = this.state;
+    if (turn === 'human') {
       this.setState({ turn: 'Robot1' });
-    } else if (this.state.turn === 'Robot1') {
+    } else if (turn === 'Robot1') {
       this.setState({ turn: 'Robot2' });
-    } else if (this.state.turn === 'Robot2') {
+    } else if (turn === 'Robot2') {
       this.setState({ turn: 'Robot3' });
-    } else if (this.state.turn === 'Robot3') {
+    } else if (turn === 'Robot3') {
       this.setState({ turn: 'Robot4' });
-    } else if (this.state.turn === 'Robot4') {
+    } else if (turn === 'Robot4') {
       this.setState({ turn: 'Robot5' });
-    } else if (this.state.turn === 'Robot5') {
+    } else if (turn === 'Robot5') {
       this.setState({ turn: 'Dealer' });
     } else {
       this.setState({ turn: 'End' });
@@ -167,6 +169,10 @@ class App extends React.Component {
 
   render() {
     const { players, turn } = this.state;
+    console.log(turn);
+    if (turn === 'End') {
+      const dealer = players.filter((player) => player.title === 'Dealer');
+    }
     return (
       <div>
         BlackJack Game!

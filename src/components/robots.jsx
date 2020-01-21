@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from './card.jsx';
-import CardTotal from './cardTotal.jsx';
+
 
 const Robot = ({
   info,
@@ -16,10 +16,11 @@ const Robot = ({
     }
   }
   if (turn === info.title) {
-    if (info.total < 17 && info.total < 21) {
-      hitDeck(null, info.title);
-    } else {
+    if (info.total >= 17) {
+      console.log(info.title, info.total);
       changeTurn();
+    } else if (info.total < 17) {
+      hitDeck(null, info.title);
     }
   }
   return (

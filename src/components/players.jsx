@@ -13,8 +13,6 @@ const Players = ({
       {players.map((player) => {
         if (player.title === 'Human') {
           return <Human turn={turn} changeTurn={changeTurn} trackTotals={trackTotals} key={player.title} hitDeck={hitDeck} key={player.title} info={player} />;
-        // } else if (player.title === 'Dealer') {
-        //   return <Dealer changeTurn={changeTurn} turn={turn} hitDeck={hitDeck} trackTotals={trackTotals} key={player.title} start={start} info={player} />;
         } else {
           return <Robot start={start} hitDeck={hitDeck} changeTurn={changeTurn} turn={turn} trackTotals={trackTotals} key={player.title} info={player} />;
         }
